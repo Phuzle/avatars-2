@@ -20,20 +20,17 @@ if (cluster.isPrimary && useCluster) {
 } else {
   console.log(`Worker ${process.pid} started`);
 
-  const server = await app();
+  try {
+    const server = await app();
 
-  server.listen(
-    {
+    await server.listen({
       port: config.port,
       host: config.host,
-    },
-    (err) => {
-      if (err) {
-        server.log.error(err);
-        process.exit(1);
-      }
+    });
 
-      console.info(`Server listening at http://${config.host}:${config.port}`);
-    }
-  );
+    console.info(`Server listening at http://${config.host}:${config.port}`);
+  } catch (err) {
+    console.error(err);
+    process.exit(1);
+  }
 }
