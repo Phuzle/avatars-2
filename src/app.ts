@@ -92,6 +92,15 @@ export const app = async () => {
     }
   };
 
+  // Health check route
+  app.route({
+    method: 'GET',
+    url: '/health',
+    handler: async (request: FastifyRequest, reply: FastifyReply) => {
+      return reply.code(200).send({ status: 'ok' });
+    },
+  });
+
   // Route: /:seed/* (with optional path segments)
   app.route<AvatarRequest>({
     method: 'GET',
